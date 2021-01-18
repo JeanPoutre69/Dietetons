@@ -3,10 +3,29 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Dietetons"
+        xmlns:local="clr-namespace:Dietetons" 
+        xmlns:view="clr-namespace:Dietetons.View"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="TabItem">
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="FontWeight" Value="Bold"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid>
-        
+        <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <TabItem Header="Rechercher un client">
+                <view:FindClient/>
+            </TabItem>
+            <TabItem Header="Ajouter un Client">
+                <view:AddClient/>
+            </TabItem>
+            
+        </TabControl>
+
     </Grid>
 </Window>
