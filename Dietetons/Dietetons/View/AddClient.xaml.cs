@@ -1,5 +1,4 @@
-﻿using Dietetons.View;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,18 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Dietetons
+namespace Dietetons.View
 {
     /// <summary>
-    /// Logique d'interaction pour MainWindow.xaml
+    /// Logique d'interaction pour AddClient.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class AddClient : UserControl
     {
-        public MainWindow()
+        public AddClient()
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel();
         }
-
     }
 }
