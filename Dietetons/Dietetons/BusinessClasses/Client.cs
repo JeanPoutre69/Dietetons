@@ -11,8 +11,8 @@ namespace Dietetons.Utils
     {
         public string Name { get; set; }
         public string Surname { get; set; }
-        public string MailAddress { get; set; }
-        public string PhoneNumber { get; set; }
+        public string EmailAddress { get; set; }
+        public string Phone { get; set; }
         
         [NotToPick]
         public double? IMC 

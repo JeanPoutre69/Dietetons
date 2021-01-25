@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dietetons", "Dietetons\Dietetons.csproj", "{72D73B8A-1015-4EFF-8299-63DF5DAE5735}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DietetonsTests", "DietetonsTests\DietetonsTests.csproj", "{B439431B-E3B3-406B-B1BE-038D9230C978}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DietetonsTests", "DietetonsTests\DietetonsTests.csproj", "{5F7E2B02-4FE7-4236-9C59-E07C5C492067}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{72D73B8A-1015-4EFF-8299-63DF5DAE5735}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72D73B8A-1015-4EFF-8299-63DF5DAE5735}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72D73B8A-1015-4EFF-8299-63DF5DAE5735}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B439431B-E3B3-406B-B1BE-038D9230C978}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B439431B-E3B3-406B-B1BE-038D9230C978}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B439431B-E3B3-406B-B1BE-038D9230C978}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B439431B-E3B3-406B-B1BE-038D9230C978}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F7E2B02-4FE7-4236-9C59-E07C5C492067}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F7E2B02-4FE7-4236-9C59-E07C5C492067}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F7E2B02-4FE7-4236-9C59-E07C5C492067}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F7E2B02-4FE7-4236-9C59-E07C5C492067}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,6 @@
-﻿using Dietetons.View;
+﻿using Dietetons.DataBase;
+using Dietetons.Utils;
+using Dietetons.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -9,7 +9,12 @@ namespace Dietetons.DataBase
 {
     public static class LocalDatabaseConnection
     {
-        public static SqlConnection Connection { get { return new SqlConnection(
-            System.Configuration.ConfigurationManager.ConnectionStrings["LocalDBConnection"].ConnectionString); } }
+        public static string ConnectionStr
+        {
+            get
+            {
+                return System.Configuration.ConfigurationManager.ConnectionStrings["Dietetic"].ConnectionString;
+            }
+        }
     }
 }

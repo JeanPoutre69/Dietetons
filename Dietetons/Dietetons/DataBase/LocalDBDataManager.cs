@@ -17,6 +17,10 @@ namespace Dietetons.DataBase
         private const string ValuesInRequestStr = "@Values";
         private const string ClientTableName = "Clients";
 
+        public LocalDBDataManager()
+        {
+        }
+
         public bool AddClient(Client client)
         {
             return Insert<Client>(ClientTableName, client);
@@ -56,22 +60,21 @@ namespace Dietetons.DataBase
         /// <returns></returns>
         private bool Insert<T>(string tableName, T objectToInsert)
         {
-            Action objectAdding = () =>
+            Action<SqlConnection, SqlTransaction> objectAdding = (connection, transaction) =>
             {
-                var properties = objectToInsert.GetType().GetProperties();
-                string request = BasicInsertRequest.Replace(ValuesInRequestStr, GetMultiValuesParameterStr(properties.Count()));
-                var sqlCommand = new SqlCommand(request, LocalDatabaseConnection.Connection);
+                var propertiesToHandle = objectToInsert.GetType().GetProperties()
+                    .Where(x => x.CustomAttributes.Where(y => y.GetType() != typeof(NotToPickAttribute)).Count() == 0);
 
-                // Handling table name
-                sqlCommand.Parameters.AddWithValue(TableNameInRequestStr, tableName);
-
-                // Handling column names
-                var propertiesNames = properties.Where(x => x.GetCustomAttributes(typeof(NotToPickAttribute), false).Count() == 0).Select(x => x.Name);
-                sqlCommand.Parameters.AddWithValue(TableColumnNamesInRequestStr, "(" + propertiesNames.Stringify(", ") + ")");
-
+                // Forging the base of the request
+                string basicRequestNotCompleted = BasicInsertRequest.Replace(ValuesInRequestStr, GetMultiValuesParameterStr(propertiesToHandle.Count()));
+                string requestNoColumnNames = basicRequestNotCompleted.Replace(TableNameInRequestStr, ClientTableName);
+                string request = requestNoColumnNames.Replace(TableColumnNamesInRequestStr, 
+                    "(" + propertiesToHandle.Select(x => x.Name).Stringify(", ") + ")");
+                
+                var sqlCommand = new SqlCommand(request, connection, transaction);
                 // Handling values
                 int propertyCount = 1;
-                foreach (var property in properties)
+                foreach (var property in propertiesToHandle)
                 {
                     var sqlParameter = sqlCommand.Parameters.Add(ValuesInRequestStr + propertyCount, GetSqlType(property.PropertyType));
                     sqlParameter.Value = objectToInsert.GetPropertyValue(property.Name);
@@ -86,23 +89,23 @@ namespace Dietetons.DataBase
 
         private SqlDbType GetSqlType(Type propertyType)
         {
-            if (propertyType.IsInstanceOfType(typeof(string)) || propertyType.IsSubclassOf(typeof(string)))
+            if (propertyType == typeof(string))
             {
                 return SqlDbType.NVarChar;
             } 
-            else if (propertyType.IsInstanceOfType(typeof(int)) || propertyType.IsSubclassOf(typeof(int)))
+            else if (propertyType == typeof(int) || propertyType == typeof(int?))
             {
                 return SqlDbType.Int;
             }
-            else if (propertyType.IsInstanceOfType(typeof(double)) || propertyType.IsSubclassOf(typeof(double)))
+            else if (propertyType == typeof(double) || propertyType == typeof(double?))
             {
                 return SqlDbType.Float;
             }
-            else if (propertyType.IsInstanceOfType(typeof(bool)) || propertyType.IsSubclassOf(typeof(bool)))
+            else if (propertyType == typeof(bool) || propertyType == typeof(bool?))
             {
                 return SqlDbType.Int;
             }
-            else if (propertyType.IsInstanceOfType(typeof(DateTime)) || propertyType.IsSubclassOf(typeof(DateTime)))
+            else if (propertyType == typeof(DateTime) || propertyType == typeof(DateTime?))
             {
                 return SqlDbType.DateTime;
             }
@@ -123,23 +126,27 @@ namespace Dietetons.DataBase
             return strToReturn;
         }
 
-        private bool SafeDBAction(Action action)
+        private bool SafeDBAction(Action<SqlConnection, SqlTransaction> action)
         {
-            var transaction = LocalDatabaseConnection.Connection.BeginTransaction();
+            SqlTransaction transaction = null;
+            SqlConnection connection = null;
             try
             {
-                LocalDatabaseConnection.Connection.Open();
-                action();
+
+                connection = new SqlConnection(LocalDatabaseConnection.ConnectionStr);
+                connection.Open();
+                transaction = connection.BeginTransaction();
+                action(connection, transaction);
                 transaction.Commit();
                 return true;
             } catch (Exception ex)
             {
-                transaction.Rollback();
+                transaction?.Rollback();
                 return false;
             }
             finally
             {
-                LocalDatabaseConnection.Connection.Close();
+                connection.Close();
             }
         }
     }
